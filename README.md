@@ -2,7 +2,7 @@
 
 ## Intro
 
-This will just be a static lib to hold some common baseline code I find (tediously) repeating frequently across repos. This will mainly be error reporting and handling, string utilities, RAII, common utility types and functions, module facades and some UI related types for Win32 windows. Possibly DirectX related stuff, if I can finally settle on a given structure when working on graphics applications.
+This will just be a static lib to hold some common baseline code I find (tediously) repeating frequently across my C++/Win32 repos. This will mainly be error reporting and handling, string utilities, RAII, common utility types and functions, module facades and some UI related types for Win32 windows. Possibly DirectX related stuff, if I can finally settle on a given structure when working on graphics applications.
 
 The code is mostly cleaned up code extracted from my other repos.
 
