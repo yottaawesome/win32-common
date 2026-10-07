@@ -161,6 +161,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Concepts.ixx" />
     <ClCompile Include="Win32Error.ixx" />
     <ClCompile Include="String.ixx" />
     <ClCompile Include="Util.ixx" />

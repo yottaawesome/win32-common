@@ -1,5 +1,6 @@
 export module Shared:String;
 import std;
+import :Concepts;
 
 export namespace String
 {
@@ -30,4 +31,150 @@ export namespace String
 
 		return results;
 	}
+}
+
+export namespace String
+{
+	// See https://dev.to/sgf4/strings-as-template-parameters-c20-4joh
+	template<typename TTypeToCheck>
+	concept ValidCharType = Concepts::OneOf<TTypeToCheck, char, wchar_t>;
+
+	template <ValidCharType TChar, size_t N>
+	struct FixedString
+	{
+		using CharType = TChar;
+		using String = std::basic_string<TChar>;
+		using View = std::basic_string_view<TChar>;
+
+		TChar Buffer[N]{};
+
+		constexpr FixedString() noexcept = default;
+
+		constexpr FixedString(const TChar(&arg)[N]) noexcept
+		{
+			std::copy_n(arg, N, Buffer);
+			// This also works
+			//for (unsigned i = 0; i < N; i++)
+			//	Buffer[i] = arg[i];
+		}
+
+		// There's a consteval bug in the compiler.
+		// See https://developercommunity.visualstudio.com/t/consteval-function-unexpectedly-returns/10501040
+		[[nodiscard]]
+		constexpr operator const TChar* (this const FixedString& self) noexcept
+		{
+			return self.Buffer;
+		}
+
+		[[nodiscard]]
+		constexpr auto ToView(this const FixedString& self) noexcept -> View
+		{
+			return { self.Buffer };
+		}
+
+		[[nodiscard]]
+		constexpr operator View(this const FixedString& self) noexcept
+		{
+			return { self.Buffer };
+		}
+
+		[[nodiscard]]
+		constexpr auto ToString(this const FixedString& self) noexcept -> String
+		{
+			return { self.Buffer };
+		}
+
+		template<size_t M>
+		[[nodiscard]]
+		constexpr auto operator==(this const FixedString&, const TChar(&str)[M]) noexcept -> bool
+		{
+			return false;
+		}
+
+		[[nodiscard]]
+		constexpr auto operator==(this const FixedString& self, const TChar(&str)[N]) noexcept -> bool
+		{
+			return std::equal(str, str + N, self.Buffer);
+		}
+
+		[[nodiscard]]
+		constexpr auto operator==(this const FixedString& self, const FixedString<TChar, N> str) noexcept -> bool
+		{
+			return std::equal(str.Buffer, str.Buffer + N, self.Buffer);
+		}
+
+		[[nodiscard]]
+		constexpr auto Size(this const FixedString& self) noexcept -> size_t { return N - 1; }
+
+		template<ValidCharType TChar, std::size_t N2>
+		[[nodiscard]]
+		constexpr auto operator==(this const FixedString& self, const FixedString<TChar, N2> s) -> bool
+		{
+			return false;
+		}
+
+		template<std::size_t N2>
+		[[nodiscard]]
+		constexpr auto operator+(this const FixedString& self, const FixedString<TChar, N2>& str) -> FixedString<TChar, N + N2 - 1>
+		{
+			TChar newchar[N + N2 - 1]{};
+			std::copy_n(self.Buffer, N - 1, newchar);
+			std::copy_n(str.Buffer, N2, newchar + N - 1);
+			return newchar;
+		}
+
+		struct Iterator
+		{
+			const CharType* Buffer = nullptr;
+			int Position = 0;
+			constexpr auto operator++(this Iterator& self) noexcept -> Iterator&
+			{
+				Position++;
+				return self;
+			}
+			[[nodiscard]]
+			constexpr auto operator*(this const Iterator& self) noexcept -> CharType
+			{
+				return self.Buffer[Position];
+			}
+			[[nodiscard]]
+			constexpr auto operator!=(this const Iterator& self, const Iterator& other) noexcept -> bool
+			{
+				return self.Position != other.Position;
+			}
+		};
+
+		[[nodiscard]]
+		constexpr auto begin(this const FixedString& self) noexcept -> Iterator
+		{
+			return Iterator{ self.Buffer, 0 };
+		}
+
+		[[nodiscard]]
+		constexpr auto end(this const FixedString& self) noexcept -> Iterator
+		{
+			return Iterator{ self.Buffer, N - 1 };
+		}
+	};
+	template<size_t N>
+	FixedString(char const (&)[N]) -> FixedString<char, N>;
+	template<size_t N>
+	FixedString(wchar_t const (&)[N]) -> FixedString<wchar_t, N>;
+
+	template<ValidCharType TChar, std::size_t s1, std::size_t s2>
+	constexpr auto operator+(FixedString<TChar, s1> fs, const TChar(&str)[s2])
+	{
+		return fs + FixedString<TChar, s2>(str);
+	}
+
+	template<ValidCharType TChar, std::size_t s1, std::size_t s2>
+	constexpr auto operator+(const TChar(&str)[s2], FixedString<TChar, s1> fs)
+	{
+		return FixedString<s2>(str) + fs;
+	}
+
+	template<size_t N>
+	using FixedStringW = FixedString<wchar_t, N>;
+	template<size_t N>
+	using FixedStringA = FixedString<char, N>;
 }

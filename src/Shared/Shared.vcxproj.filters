@@ -45,5 +45,8 @@
     <ClCompile Include="Win32Error.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Concepts.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
