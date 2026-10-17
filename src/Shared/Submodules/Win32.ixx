@@ -3,6 +3,9 @@ module;
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <comdef.h>
+#include <wtsapi32.h>
+#include <userenv.h>
+#include <Lmcons.h>
 
 export module Win32;
 import PlatformShared;
@@ -12,6 +15,7 @@ export namespace Win32
 	constexpr auto EventModifyState = EVENT_MODIFY_STATE;
 	constexpr auto Synchronize = SYNCHRONIZE;
 	constexpr auto MaxPath = MAX_PATH;
+
 	using
 		::HINSTANCE,
 		::LPWSTR,
@@ -33,6 +37,7 @@ export namespace Win32
 		::LPSTR,
 		::HBRUSH,
 		::BOOL,
+		::LPVOID,
 		::HCURSOR,
 		::WNDCLASSEXW,
 		::GUID,
@@ -50,6 +55,20 @@ export namespace Win32
 		::CLSCTX,
 		::USHORT,
 		::WCHAR,
+		::LPSERVICE_MAIN_FUNCTIONW,
+		::SERVICE_TABLE_ENTRY,
+		::SERVICE_STATUS_HANDLE,
+		::SERVICE_STATUS,
+		::WTSSESSION_NOTIFICATION,
+		::CreateEventW,
+		::CreateEventExW,
+		::RegisterServiceCtrlHandlerExW,
+		::StartServiceCtrlDispatcherW,
+		::WaitForSingleObject,
+		::WaitForSingleObjectEx,
+		::WaitForMultipleObjects,
+		::WaitForMultipleObjectsEx,
+		::SetServiceStatus,
 		::CoUninitialize,
 		::CoInitializeEx,
 		::SetWindowPos,
@@ -114,6 +133,20 @@ export namespace Win32
 
 	constexpr auto Truncate = _TRUNCATE;
 
+	constexpr auto Infinite = INFINITE;
+
+	namespace SystemCodes
+	{
+		enum
+		{
+			NoError = ERROR_SUCCESS,
+			NotFound = ERROR_FILE_NOT_FOUND,
+			AlreadyExists = ERROR_ALREADY_EXISTS,
+			AccessDenied = ERROR_ACCESS_DENIED,
+			InvalidParameter = ERROR_INVALID_PARAMETER
+		};
+	}
+
 	namespace SystemMetrics
 	{
 		enum
@@ -140,7 +173,7 @@ export namespace Win32
 		};
 	}
 
-	constexpr auto GuidNull = PlatformShared::InvocableValue<[] {return GUID_NULL; } > {};
+	constexpr auto GuidNull = PlatformShared::InvocableValue < [] {return GUID_NULL; } > {};
 	constexpr auto EnableVirtualTerminalProcessing = ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 	constexpr auto StdOutputHandle = STD_OUTPUT_HANDLE;
 
@@ -336,4 +369,20 @@ export namespace Win32
 			ShowDefault = SW_SHOWNORMAL
 		};
 	}
+
+	constexpr auto ScManagerAllAccess = SC_MANAGER_ALL_ACCESS;
+	constexpr auto ServiceAllAccess = SERVICE_ALL_ACCESS;
+	constexpr auto ServiceWin32OwnProcess = SERVICE_WIN32_OWN_PROCESS;
+	constexpr auto ServiceDemandStart = SERVICE_DEMAND_START;
+	constexpr auto ServiceErrorNormal = SERVICE_ERROR_NORMAL;
+	constexpr auto ServiceAcceptStop = SERVICE_ACCEPT_STOP;
+	constexpr auto ServiceAccepSessionChange = SERVICE_ACCEPT_SESSIONCHANGE;
+	constexpr auto ServiceStartPending = SERVICE_START_PENDING;
+	constexpr auto ServiceControlShutdown = SERVICE_CONTROL_SHUTDOWN;
+	constexpr auto ServiceRunning = SERVICE_RUNNING;
+	constexpr auto ServiceStopped = SERVICE_STOPPED;
+	constexpr auto ServiceStopPending = SERVICE_STOP_PENDING;
+	constexpr auto ServiceControlStop = SERVICE_CONTROL_STOP;
+	constexpr auto ServiceControlInterrogate = SERVICE_CONTROL_INTERROGATE;
+	constexpr auto ServiceControlSessionChange = SERVICE_CONTROL_SESSIONCHANGE;
 }
