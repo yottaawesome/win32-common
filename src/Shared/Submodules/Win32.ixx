@@ -23,6 +23,9 @@ export namespace Win32
 		::LRESULT,
 		::HWND,
 		::UINT,
+		::SC_HANDLE,
+		::HKEY,
+		::LPDWORD,
 		::WPARAM,
 		::LPARAM,
 		::HICON,
@@ -60,6 +63,14 @@ export namespace Win32
 		::SERVICE_STATUS_HANDLE,
 		::SERVICE_STATUS,
 		::WTSSESSION_NOTIFICATION,
+		::DeleteService,
+		::ControlService,
+		::OpenServiceW,
+		::CreateServiceW,
+		::CloseServiceHandle,
+		::RegCloseKey,
+		::GetModuleFileNameW,
+		::OpenSCManagerW,
 		::CreateEventW,
 		::CreateEventExW,
 		::RegisterServiceCtrlHandlerExW,
@@ -385,4 +396,5 @@ export namespace Win32
 	constexpr auto ServiceControlStop = SERVICE_CONTROL_STOP;
 	constexpr auto ServiceControlInterrogate = SERVICE_CONTROL_INTERROGATE;
 	constexpr auto ServiceControlSessionChange = SERVICE_CONTROL_SESSIONCHANGE;
+	constexpr auto Delete = DELETE;
 }

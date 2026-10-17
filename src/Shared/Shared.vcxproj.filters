@@ -24,7 +24,7 @@
     <ClCompile Include="Submodules\Win32.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Submodules\Common.ixx">
+    <ClCompile Include="Submodules\PlatformShared.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Logging.ixx">

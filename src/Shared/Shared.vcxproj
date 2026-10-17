@@ -165,7 +165,7 @@
     <ClCompile Include="Win32Error.ixx" />
     <ClCompile Include="String.ixx" />
     <ClCompile Include="Util.ixx" />
-    <ClCompile Include="Submodules\Common.ixx" />
+    <ClCompile Include="Submodules\PlatformShared.ixx" />
     <ClCompile Include="Logging.ixx" />
     <ClCompile Include="Shared.ixx" />
     <ClCompile Include="Submodules\DirectXMath.ixx" />
