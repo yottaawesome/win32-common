@@ -4,6 +4,6 @@ export import DirectXMath;
 export import :Logging;
 export import :String;
 export import :Util;
-export import :Win32Raii; 
-export import :Win32Error;
+export import :Raii; 
+export import :Error;
 export import :Concepts;

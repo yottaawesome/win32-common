@@ -1,11 +1,11 @@
-export module Shared:Win32Error;
+export module Shared:Error;
 import std;
 import Win32;
 
 //
 //
 // Error utility functions for Win32 error codes.
-export namespace Win32::Error
+export namespace Error
 {
 	auto Win32CodeToString(Win32::DWORD code) -> std::string
 	{
@@ -35,7 +35,7 @@ export namespace Win32::Error
 //
 //
 // Exceptions for Win32 and runtime errors.
-export namespace Win32::Error
+export namespace Error
 {
 	//
 	// Basic runtime error. Includes source location information in the error message.

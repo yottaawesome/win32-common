@@ -39,10 +39,10 @@
     <ClCompile Include="Window.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Win32Raii.ixx">
+    <ClCompile Include="Raii.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Win32Error.ixx">
+    <ClCompile Include="Error.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Concepts.ixx">

@@ -63,6 +63,9 @@ export namespace Win32
 		::SERVICE_STATUS_HANDLE,
 		::SERVICE_STATUS,
 		::WTSSESSION_NOTIFICATION,
+		::SetHandleInformation,
+		::DuplicateHandle,
+		::GetCurrentProcess,
 		::DeleteService,
 		::ControlService,
 		::OpenServiceW,
@@ -146,6 +149,25 @@ export namespace Win32
 
 	constexpr auto Infinite = INFINITE;
 
+	namespace HandleFlags
+	{
+		enum
+		{
+			Inherit = HANDLE_FLAG_INHERIT,
+			ProtectFromClose = HANDLE_FLAG_PROTECT_FROM_CLOSE
+		};
+	}
+
+	namespace DuplicateHandleFlags
+	{
+		enum
+		{
+			SameAccess = DUPLICATE_SAME_ACCESS,
+			CloseSource = DUPLICATE_CLOSE_SOURCE,
+			SameAccessAndCloseSource = DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE
+		};
+	}
+
 	namespace SystemCodes
 	{
 		enum
@@ -184,7 +206,7 @@ export namespace Win32
 		};
 	}
 
-	constexpr auto GuidNull = PlatformShared::InvocableValue < [] {return GUID_NULL; } > {};
+	constexpr auto GuidNull = PlatformShared::ConstexprValue<[] {return GUID_NULL; }>{};
 	constexpr auto EnableVirtualTerminalProcessing = ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 	constexpr auto StdOutputHandle = STD_OUTPUT_HANDLE;
 

@@ -1,10 +1,10 @@
 export module Shared:Window;
 import std;
 import Win32;
-import :Win32Raii;
-import :Win32Error;
+import :Raii;
+import :Error;
 
-export namespace Win32::UI
+export namespace UI
 {
 	struct Dimensions
 	{
@@ -138,7 +138,7 @@ export namespace Win32::UI
 				this
 			);
 			if (hwnd == nullptr)
-				throw Win32::Error::Win32Error{ Win32::GetLastError(), "Failed to create window" };
+				throw Error::Win32Error{ Win32::GetLastError(), "Failed to create window" };
 			if (args.InitiallyVisible)
 				Win32::ShowWindow(hwnd, Win32::ShowWindowFlags::Show);
 			else 
@@ -162,7 +162,7 @@ export namespace Win32::UI
 				Win32::SetWindowLongPtrW(hWnd, Win32::Gwlp::UserData, reinterpret_cast<Win32::LONG_PTR>(pThis));
 
 				// Adopt ownership once, during creation
-				pThis->m_window = HwndUniquePtr{ hWnd };
+				pThis->m_window = Raii::HwndUniquePtr{ hWnd };
 			}
 			else
 			{
@@ -269,6 +269,6 @@ export namespace Win32::UI
 		}
 
 	private:
-		Win32::HwndUniquePtr m_window;
+		Raii::HwndUniquePtr m_window;
 	};
 }
