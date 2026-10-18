@@ -63,9 +63,21 @@ export namespace Win32
 		::SERVICE_STATUS_HANDLE,
 		::SERVICE_STATUS,
 		::WTSSESSION_NOTIFICATION,
+		::CRITICAL_SECTION,
 		::SetHandleInformation,
 		::DuplicateHandle,
+		::DuplicateToken,
+		::DuplicateTokenEx,
 		::GetCurrentProcess,
+		::GetCurrentProcessId,
+		::OpenEventA,
+		::OpenEventW,
+		::DeleteCriticalSection,
+		::InitializeCriticalSection,
+		::InitializeCriticalSectionEx,
+		::InitializeCriticalSectionAndSpinCount,
+		::EnterCriticalSection,
+		::LeaveCriticalSection,
 		::DeleteService,
 		::ControlService,
 		::OpenServiceW,
@@ -147,6 +159,8 @@ export namespace Win32
 
 	constexpr auto Truncate = _TRUNCATE;
 
+	constexpr auto WaitObject0 = WAIT_OBJECT_0;
+
 	constexpr auto Infinite = INFINITE;
 
 	namespace HandleFlags
@@ -162,11 +176,19 @@ export namespace Win32
 	{
 		enum
 		{
-			SameAccess = DUPLICATE_SAME_ACCESS,
 			CloseSource = DUPLICATE_CLOSE_SOURCE,
-			SameAccessAndCloseSource = DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE
+			SameAccess = DUPLICATE_SAME_ACCESS
 		};
 	}
+
+	enum class WaitResult : unsigned long
+	{
+		Failed = WAIT_FAILED,
+		Success = WAIT_OBJECT_0,
+		Timeout = WAIT_TIMEOUT,
+		Abandoned = WAIT_ABANDONED,
+		IoCompletion = WAIT_IO_COMPLETION
+	};
 
 	namespace SystemCodes
 	{
@@ -176,7 +198,8 @@ export namespace Win32
 			NotFound = ERROR_FILE_NOT_FOUND,
 			AlreadyExists = ERROR_ALREADY_EXISTS,
 			AccessDenied = ERROR_ACCESS_DENIED,
-			InvalidParameter = ERROR_INVALID_PARAMETER
+			InvalidParameter = ERROR_INVALID_PARAMETER,
+			CallNotImplemented = ERROR_CALL_NOT_IMPLEMENTED,
 		};
 	}
 
@@ -206,7 +229,7 @@ export namespace Win32
 		};
 	}
 
-	constexpr auto GuidNull = PlatformShared::ConstexprValue<[] {return GUID_NULL; }>{};
+	constexpr auto GuidNull = PlatformShared::ConstexprValue < [] {return GUID_NULL; } > {};
 	constexpr auto EnableVirtualTerminalProcessing = ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 	constexpr auto StdOutputHandle = STD_OUTPUT_HANDLE;
 
@@ -409,7 +432,8 @@ export namespace Win32
 	constexpr auto ServiceDemandStart = SERVICE_DEMAND_START;
 	constexpr auto ServiceErrorNormal = SERVICE_ERROR_NORMAL;
 	constexpr auto ServiceAcceptStop = SERVICE_ACCEPT_STOP;
-	constexpr auto ServiceAccepSessionChange = SERVICE_ACCEPT_SESSIONCHANGE;
+	constexpr auto ServiceAcceptShutdown = SERVICE_ACCEPT_SHUTDOWN;
+	constexpr auto ServiceAcceptSessionChange = SERVICE_ACCEPT_SESSIONCHANGE;
 	constexpr auto ServiceStartPending = SERVICE_START_PENDING;
 	constexpr auto ServiceControlShutdown = SERVICE_CONTROL_SHUTDOWN;
 	constexpr auto ServiceRunning = SERVICE_RUNNING;

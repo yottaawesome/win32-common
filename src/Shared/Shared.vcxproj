@@ -161,6 +161,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Async.ixx" />
     <ClCompile Include="Concepts.ixx" />
     <ClCompile Include="Error.ixx" />
     <ClCompile Include="String.ixx" />

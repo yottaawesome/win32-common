@@ -48,5 +48,8 @@
     <ClCompile Include="Concepts.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Async.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
