@@ -76,9 +76,12 @@ export namespace Raii
 			return m_handle;
 		}
 
-		constexpr auto reset(Win32::HANDLE handle = nullptr) noexcept -> Win32::HANDLE
+		constexpr void reset(Win32::HANDLE handle = nullptr) noexcept
 		{
-			return std::exchange(m_handle, handle);
+			if (m_handle == handle)
+				return;
+			CloseHandle(m_handle);
+			m_handle = handle;
 		}
 
 		void SetInheritance(bool inherit)
