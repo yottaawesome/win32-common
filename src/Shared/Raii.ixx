@@ -51,7 +51,7 @@ export namespace Raii
 
 		void Close() noexcept
 		{
-			if (m_handle)
+			if (IsValid())
 			{
 				Win32::CloseHandle(m_handle);
 				m_handle = nullptr;
@@ -86,7 +86,14 @@ export namespace Raii
 
 		void SetInheritance(bool inherit)
 		{
-			auto succeeded = Win32::SetHandleInformation(m_handle, Win32::HandleFlags::Inherit, inherit ? Win32::HandleFlags::Inherit : 0);
+			SetInheritance(m_handle, inherit);
+		}
+
+		static void SetInheritance(Win32::HANDLE handle, bool inherit)
+		{
+			if (handle == nullptr or handle == Win32::InvalidHandleValue)
+				throw Error::RuntimeError{ "Invalid handle" };
+			auto succeeded = Win32::SetHandleInformation(handle, Win32::HandleFlags::Inherit, inherit ? Win32::HandleFlags::Inherit : 0);
 			if (not succeeded)
 				throw Error::Win32Error{ Win32::GetLastError(), "Failed to set handle inheritance" };
 		}
