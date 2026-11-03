@@ -163,7 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Async\Async.ixx" />
     <ClCompile Include="Async\Event.ixx" />
-    <ClCompile Include="Async\OverlappedOperation.ixx" />
+    <ClCompile Include="Async\Overlapped.ixx" />
     <ClCompile Include="Concepts\Concepts.ixx" />
     <ClCompile Include="Error\Error.ixx" />
     <ClCompile Include="Error\ErrorTypes.ixx" />

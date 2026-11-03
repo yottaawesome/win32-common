@@ -84,7 +84,7 @@
     <ClCompile Include="IPC\IPC.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Async\OverlappedOperation.ixx">
+    <ClCompile Include="Async\Overlapped.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util\BorrowedHandle.ixx">
