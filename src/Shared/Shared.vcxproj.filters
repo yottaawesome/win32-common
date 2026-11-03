@@ -81,5 +81,14 @@
     <ClCompile Include="Util\TypeSequence.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IPC\IPC.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Async\OverlappedOperation.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\BorrowedHandle.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

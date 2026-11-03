@@ -103,7 +103,7 @@ export namespace Async
 				if (not m_event)
 					throw Error::RuntimeError{ "No Event to wait on" };
 
-				auto status = static_cast<Win32::WaitResult>(Win32::WaitForSingleObject(m_event.get(), Win32::Infinite));
+				auto status = Win32::WaitForSingleObject(m_event.get(), Win32::Infinite);
 				if (status == Win32::WaitResult::Failed)
 					throw Error::Win32Error{ Win32::GetLastError(), "WaitForSingleObject failed" };
 				if (status == Win32::WaitResult::Abandoned)
@@ -124,16 +124,16 @@ export namespace Async
 					throw Error::RuntimeError{ "No Event to wait on" };
 
 				auto millis = static_cast<unsigned long>(duration_cast<milliseconds>(time).count());
-				switch (Win32::WaitResult status = static_cast<Win32::WaitResult>(Win32::WaitForSingleObjectEx(m_event.GetHandle(), millis, alertable)))
+				switch (auto status = Win32::WaitForSingleObjectEx(m_event.GetHandle(), millis, alertable))
 				{
-				case Win32::WaitResult::Success:
-					return true;
-				case Win32::WaitResult::Timeout:
-					return false;
-				case Win32::WaitResult::Abandoned:
-					throw Error::RuntimeError{ "The wait was abandoned" };
-				case Win32::WaitResult::Failed:
-					throw Error::Win32Error{ Win32::GetLastError(), "WaitForSingleObject() failed" };
+					case Win32::WaitResult::Success:
+						return true;
+					case Win32::WaitResult::Timeout:
+						return false;
+					case Win32::WaitResult::Abandoned:
+						throw Error::RuntimeError{ "The wait was abandoned" };
+					case Win32::WaitResult::Failed:
+						throw Error::Win32Error{ Win32::GetLastError(), "WaitForSingleObject() failed" };
 				}
 				return false;
 			}

@@ -64,6 +64,19 @@ export namespace Win32
 		::SERVICE_STATUS,
 		::WTSSESSION_NOTIFICATION,
 		::CRITICAL_SECTION,
+		::SECURITY_ATTRIBUTES,
+		::OVERLAPPED,
+		::ConnectNamedPipe,
+		::FlushFileBuffers,
+		::GetFileType,
+		::WaitNamedPipeW,
+		::GetOverlappedResult,
+		::CreateFileW,
+		::CreateFileA,
+		::ReadFile,
+		::WriteFile,
+		::DisconnectNamedPipe,
+		::CreateNamedPipeW,
 		::SetHandleInformation,
 		::DuplicateHandle,
 		::DuplicateToken,
@@ -157,6 +170,7 @@ export namespace Win32
 		::CreateWindowExW
 		;
 
+	constexpr auto UnlimitedPipeInstances = PIPE_UNLIMITED_INSTANCES;
 	constexpr auto Truncate = _TRUNCATE;
 
 	constexpr auto WaitObject0 = WAIT_OBJECT_0;
@@ -181,14 +195,17 @@ export namespace Win32
 		};
 	}
 
-	enum class WaitResult : unsigned long
+	export namespace WaitResult
 	{
-		Failed = WAIT_FAILED,
-		Success = WAIT_OBJECT_0,
-		Timeout = WAIT_TIMEOUT,
-		Abandoned = WAIT_ABANDONED,
-		IoCompletion = WAIT_IO_COMPLETION
-	};
+		enum : unsigned long
+		{
+			Failed = WAIT_FAILED,
+			Success = WAIT_OBJECT_0,
+			Timeout = WAIT_TIMEOUT,
+			Abandoned = WAIT_ABANDONED,
+			IoCompletion = WAIT_IO_COMPLETION
+		};
+	}
 
 	namespace SystemCodes
 	{
@@ -200,6 +217,12 @@ export namespace Win32
 			AccessDenied = ERROR_ACCESS_DENIED,
 			InvalidParameter = ERROR_INVALID_PARAMETER,
 			CallNotImplemented = ERROR_CALL_NOT_IMPLEMENTED,
+			OutOfMemory = ERROR_OUTOFMEMORY,
+			IoPending = ERROR_IO_PENDING,
+			IoIncomplete = ERROR_IO_INCOMPLETE,
+			IoCanceled = ERROR_OPERATION_ABORTED,
+			PipeConnected = ERROR_PIPE_CONNECTED,
+			PipeBusy = ERROR_PIPE_BUSY,
 		};
 	}
 

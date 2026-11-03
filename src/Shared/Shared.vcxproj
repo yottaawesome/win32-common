@@ -163,15 +163,18 @@
   <ItemGroup>
     <ClCompile Include="Async\Async.ixx" />
     <ClCompile Include="Async\Event.ixx" />
+    <ClCompile Include="Async\OverlappedOperation.ixx" />
     <ClCompile Include="Concepts\Concepts.ixx" />
     <ClCompile Include="Error\Error.ixx" />
     <ClCompile Include="Error\ErrorTypes.ixx" />
     <ClCompile Include="Error\Functions.ixx" />
+    <ClCompile Include="IPC\IPC.ixx" />
     <ClCompile Include="Raii\UniquePtrs.ixx" />
     <ClCompile Include="Raii\Win32Handle.ixx" />
     <ClCompile Include="Strings\FixedString.ixx" />
     <ClCompile Include="Strings\Functions.ixx" />
     <ClCompile Include="Strings\String.ixx" />
+    <ClCompile Include="Util\BorrowedHandle.ixx" />
     <ClCompile Include="UI\TopLevelWindow.ixx" />
     <ClCompile Include="Util\TypeSequence.ixx" />
     <ClCompile Include="Util\Util.ixx" />
