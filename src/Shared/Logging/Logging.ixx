@@ -37,6 +37,10 @@ namespace
 		FILE* consoleOut = nullptr;
 	};
 
+	// There's an issue here where MSVC seemingly optimizes away the static variable if it's not used in this translation unit, 
+	// which means the console won't be allocated. To work around this, we call Init() in each logging function to ensure 
+	// the console is allocated. Another workaround is to change the anonymous namespace to an named namespace. I've yet to report 
+	// this to Microsoft.
 	void Init() noexcept
 	{
 		static auto console = Console{};

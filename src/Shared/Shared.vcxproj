@@ -161,18 +161,28 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Async.ixx" />
-    <ClCompile Include="Concepts.ixx" />
-    <ClCompile Include="Error.ixx" />
-    <ClCompile Include="String.ixx" />
-    <ClCompile Include="Util.ixx" />
+    <ClCompile Include="Async\Async.ixx" />
+    <ClCompile Include="Async\Event.ixx" />
+    <ClCompile Include="Concepts\Concepts.ixx" />
+    <ClCompile Include="Error\Error.ixx" />
+    <ClCompile Include="Error\ErrorTypes.ixx" />
+    <ClCompile Include="Error\Functions.ixx" />
+    <ClCompile Include="Raii\UniquePtrs.ixx" />
+    <ClCompile Include="Raii\Win32Handle.ixx" />
+    <ClCompile Include="Strings\FixedString.ixx" />
+    <ClCompile Include="Strings\Functions.ixx" />
+    <ClCompile Include="Strings\String.ixx" />
+    <ClCompile Include="UI\TopLevelWindow.ixx" />
+    <ClCompile Include="Util\TypeSequence.ixx" />
+    <ClCompile Include="Util\Util.ixx" />
     <ClCompile Include="Submodules\PlatformShared.ixx" />
-    <ClCompile Include="Logging.ixx" />
+    <ClCompile Include="Logging\Logging.ixx" />
     <ClCompile Include="Shared.ixx" />
     <ClCompile Include="Submodules\DirectXMath.ixx" />
     <ClCompile Include="Submodules\Win32.ixx" />
-    <ClCompile Include="Raii.ixx" />
-    <ClCompile Include="Window.ixx" />
+    <ClCompile Include="Raii\Raii.ixx" />
+    <ClCompile Include="UI\UI.ixx" />
+    <ClCompile Include="Util\Variant.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

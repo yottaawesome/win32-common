@@ -1,45 +1,29 @@
-export module Shared:Raii;
+export module Shared:Raii.Win32Handle;
 import std;
 import Win32;
 import :Error;
 
 export namespace Raii
 {
-	template<auto VDeleter>
-	struct Deleter
-	{
-		constexpr void operator()(auto&& ptr) const noexcept
-		{
-			VDeleter(ptr);
-		}
-	};
-	template<typename T, auto VDeleter>
-	using DirectUniquePtr = std::unique_ptr<T, Deleter<VDeleter>>;
-	template<typename T, auto VDeleter>
-	using IndirectUniquePtr = std::unique_ptr<std::remove_pointer_t<T>, Deleter<VDeleter>>;
-
-	using HandleUniquePtr = IndirectUniquePtr<std::remove_pointer_t<Win32::HANDLE>, Win32::CloseHandle>;
-	using HwndUniquePtr = IndirectUniquePtr<std::remove_pointer_t<Win32::HWND>, Win32::DestroyWindow>;
-
-	class Handle
+	class Win32Handle
 	{
 	public:
-		~Handle()
+		~Win32Handle()
 		{
 			Close();
 		}
-		Handle() noexcept = default;
-		Handle(Win32::HANDLE handle) noexcept
+		Win32Handle() noexcept = default;
+		Win32Handle(Win32::HANDLE handle) noexcept
 			: m_handle(handle)
 		{}
 
-		Handle(const Handle&) = delete;
-		Handle& operator=(const Handle&) = delete;
+		Win32Handle(const Win32Handle&) = delete;
+		Win32Handle& operator=(const Win32Handle&) = delete;
 
-		Handle(Handle&& other) noexcept
+		Win32Handle(Win32Handle&& other) noexcept
 			: m_handle(std::exchange(other.m_handle, nullptr))
 		{}
-		auto operator=(Handle&& other) noexcept -> Handle&
+		auto operator=(Win32Handle&& other) noexcept -> Win32Handle&
 		{
 			if (this != &other)
 			{
@@ -70,7 +54,7 @@ export namespace Raii
 			return IsValid();
 		}
 
-		[[nodiscard]] 
+		[[nodiscard]]
 		constexpr auto get() const noexcept -> Win32::HANDLE
 		{
 			return m_handle;
@@ -99,7 +83,7 @@ export namespace Raii
 		}
 
 		[[nodiscard]]
-		static auto DuplicateHandle(Win32::HANDLE handle) -> Handle
+		static auto DuplicateHandle(Win32::HANDLE handle) -> Win32Handle
 		{
 			auto duplicatedHandle = Win32::HANDLE{};
 			auto succeeded = Win32::DuplicateHandle(
@@ -113,7 +97,7 @@ export namespace Raii
 			);
 			if (not succeeded)
 				throw Error::Win32Error{ Win32::GetLastError(), "Failed to duplicate handle" };
-			return Handle{ duplicatedHandle };
+			return Win32Handle{ duplicatedHandle };
 		}
 
 	private:

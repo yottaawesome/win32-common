@@ -27,28 +27,58 @@
     <ClCompile Include="Submodules\PlatformShared.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logging.ixx">
+    <ClCompile Include="Logging\Logging.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="String.ixx">
+    <ClCompile Include="Strings\String.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util.ixx">
+    <ClCompile Include="Util\Util.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.ixx">
+    <ClCompile Include="UI\UI.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Raii.ixx">
+    <ClCompile Include="Raii\Raii.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Error.ixx">
+    <ClCompile Include="Error\Error.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Concepts.ixx">
+    <ClCompile Include="Concepts\Concepts.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Async.ixx">
+    <ClCompile Include="Async\Async.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Async\Event.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Raii\UniquePtrs.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Raii\Win32Handle.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Strings\Functions.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Strings\FixedString.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Error\Functions.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Error\ErrorTypes.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TopLevelWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Variant.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\TypeSequence.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

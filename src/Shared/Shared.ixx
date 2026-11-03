@@ -1,10 +1,11 @@
 export module Shared;
 export import Win32;
 export import DirectXMath;
-export import :Logging;
-export import :String;
-export import :Util;
-export import :Raii; 
-export import :Error;
-export import :Concepts;
 export import :Async;
+export import :Concepts;
+export import :Error;
+export import :Logging;
+export import :Raii;
+export import :Strings;
+export import :UI;
+export import :Util;

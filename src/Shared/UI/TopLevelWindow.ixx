@@ -1,4 +1,4 @@
-export module Shared:Window;
+export module Shared:UI.TopLevelWindow;
 import std;
 import Win32;
 import :Raii;
@@ -12,12 +12,52 @@ export namespace UI
 		std::uint32_t Height = 0;
 	};
 
+	template<typename... TArgs>
+	struct Fn
+	{
+	public:
+		constexpr Fn(std::move_only_function<auto(TArgs...) -> void> fn)
+			: m_fn{ std::move(fn) }
+		{}
+		constexpr void operator()(TArgs... args)
+		{
+			if (m_fn)
+				m_fn(std::forward<TArgs>(args)...);
+		}
+		constexpr operator bool() const noexcept
+		{
+			return static_cast<bool>(m_fn);
+		}
+		constexpr auto operator=(std::move_only_function<auto(TArgs...) -> void> fn) -> Fn&
+		{
+			m_fn = std::move(fn);
+			return *this;
+		}
+	private:
+		std::move_only_function<auto(TArgs...) -> void> m_fn;
+	};
+
+	struct WindowCallbacks
+	{
+		Fn<std::uint32_t, std::uint32_t> OnResize
+			= [](auto, auto) {};
+		Fn<std::uint32_t, std::uint32_t> OnMinimized
+			= [](auto, auto) {};
+		Fn<std::uint32_t, std::uint32_t> OnMaximized
+			= [](auto, auto) {};
+		Fn<std::uint32_t, std::uint32_t> OnRestored
+			= [](auto, auto) {};
+		Fn<std::exception_ptr> OnUnhandledException
+			= [](auto) {};
+		Fn<Win32::LPARAM, Win32::WPARAM> OnKeyDown
+			= [](auto, auto) {};
+		Fn<Win32::LPARAM, Win32::WPARAM> OnKeyUp
+			= [](auto, auto) {};
+	};
+
 	class Window
 	{
 	public:
-		template<typename... TArgs>
-		using Fn = std::move_only_function<auto(TArgs...) -> void>;
-
 		struct Args
 		{
 			std::uint32_t Width = 800;
@@ -25,41 +65,15 @@ export namespace UI
 			std::wstring WindowClassName = L"Main Window Class";
 			std::wstring Title = L"Main Window";
 			bool InitiallyVisible = true;
-			Fn<std::uint32_t, std::uint32_t> OnResize
-				= [](auto, auto) {};
-			Fn<std::uint32_t, std::uint32_t> OnMinimized
-				= [](auto, auto) {};
-			Fn<std::uint32_t, std::uint32_t> OnMaximized
-				= [](auto, auto) {};
-			Fn<std::uint32_t, std::uint32_t> OnRestored
-				= [](auto, auto) {};
-			Fn<std::exception_ptr> OnUnhandledException
-				= [](auto) {};
-			Fn<Win32::LPARAM, Win32::WPARAM> OnKeyDown
-				= [](auto, auto) {};
-			Fn<Win32::LPARAM, Win32::WPARAM> OnKeyUp
-				= [](auto, auto) {};
 		};
 
-		Window(Args args)
-			: OnResize(std::move(args.OnResize))
-			, OnMinimized(std::move(args.OnMinimized))
-			, OnMaximized(std::move(args.OnMaximized))
-			, OnRestored(std::move(args.OnRestored))
-			, OnUnhandledException(std::move(args.OnUnhandledException))
-			, OnKeyDown(std::move(args.OnKeyDown))
-			, OnKeyUp(std::move(args.OnKeyUp))
+		Window(Args args, WindowCallbacks callbacks)
+			: Callbacks(std::move(callbacks))
 		{
 			Initialize(args);
 		}
 
-		Fn<std::uint32_t, std::uint32_t> OnResize;
-		Fn<std::uint32_t, std::uint32_t> OnMinimized;
-		Fn<std::uint32_t, std::uint32_t> OnMaximized;
-		Fn<std::uint32_t, std::uint32_t> OnRestored;
-		Fn<std::exception_ptr> OnUnhandledException;
-		Fn<Win32::LPARAM, Win32::WPARAM> OnKeyDown;
-		Fn<Win32::LPARAM, Win32::WPARAM> OnKeyUp;
+		WindowCallbacks Callbacks;
 
 		auto GetClientWidth(this auto&& self) noexcept -> std::uint32_t
 		{
@@ -141,16 +155,16 @@ export namespace UI
 				throw Error::Win32Error{ Win32::GetLastError(), "Failed to create window" };
 			if (args.InitiallyVisible)
 				Win32::ShowWindow(hwnd, Win32::ShowWindowFlags::Show);
-			else 
+			else
 				Win32::ShowWindow(hwnd, Win32::ShowWindowFlags::Hide);
 		}
 
 		//
 		// Static windows procedure. Dispatches messages to the appropriate instance of the Window class.
 		static auto WindowProc(
-			Win32::HWND hWnd, 
-			Win32::UINT uMsg, 
-			Win32::WPARAM wParam, 
+			Win32::HWND hWnd,
+			Win32::UINT uMsg,
+			Win32::WPARAM wParam,
 			Win32::LPARAM lParam
 		) -> Win32::LRESULT
 		{
@@ -204,15 +218,15 @@ export namespace UI
 
 					if (wParam == Win32::WindowSizeState::Minimized)
 					{
-						OnMinimized(width, height);
+						Callbacks.OnMinimized(width, height);
 					}
 					else if (wParam == Win32::WindowSizeState::Maximized)
 					{
-						OnMaximized(width, height);
+						Callbacks.OnMaximized(width, height);
 					}
 					else if (wParam == Win32::WindowSizeState::Restored)
 					{
-						OnRestored(width, height);
+						Callbacks.OnRestored(width, height);
 					}
 
 					return 0;
@@ -220,7 +234,7 @@ export namespace UI
 
 				case Win32::Messages::ExitSizeMove:
 				{
-					OnResize(GetClientWidth(), GetClientHeight());
+					Callbacks.OnResize(GetClientWidth(), GetClientHeight());
 					return 0;
 				}
 
@@ -246,14 +260,14 @@ export namespace UI
 				case Win32::Messages::KeyDown:
 				{
 					auto keyCode = static_cast<std::uint32_t>(wParam);
-					OnKeyDown(lParam, wParam);
+					Callbacks.OnKeyDown(lParam, wParam);
 					return 0;
 				}
 
 				case Win32::Messages::KeyUp:
 				{
 					auto keyCode = static_cast<std::uint32_t>(wParam);
-					OnKeyUp(lParam, wParam);
+					Callbacks.OnKeyUp(lParam, wParam);
 					return 0;
 				}
 
@@ -263,7 +277,7 @@ export namespace UI
 		}
 		catch (...)
 		{
-			OnUnhandledException(std::current_exception());
+			Callbacks.OnUnhandledException(std::current_exception());
 			Win32::PostQuitMessage(1);
 			return 0;
 		}

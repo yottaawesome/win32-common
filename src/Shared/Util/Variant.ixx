@@ -1,4 +1,4 @@
-export module Shared:Util;
+export module Shared:Util.Variant;
 import std;
 
 export namespace Util
