@@ -4,6 +4,7 @@ export import DirectXMath;
 export import :Async;
 export import :Concepts;
 export import :Error;
+export import :IPC;
 export import :Logging;
 export import :Raii;
 export import :Strings;
