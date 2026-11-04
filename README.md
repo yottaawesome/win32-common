@@ -9,3 +9,7 @@ The code is mostly cleaned up code extracted from my other repos.
 ## Building
 
 You'll need Visual Studio 2026 with the _Desktop development with C++_ workload installed. I use the preview MSVC toolset, so the _MSVC Build Tools for x64/x86 (Preview)_ Visual Studio component is required, but this is not strictly necessary and can be disabled in the project settings.
+
+## Using
+
+I will (eventually) add a scratchpad project that demonstrates the basic uses of the library.
